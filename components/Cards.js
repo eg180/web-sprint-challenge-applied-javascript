@@ -26,75 +26,140 @@ arcticlePromise = axios.get('https://lambda-times-api.herokuapp.com/articles')
     // call the function created below HERE
     // const bootstrapArray = res.data.articles.bootstrap;
     // console.log(bootstrapArray[0].headline);
+    
 
+
+    
     const bootstrapArray = res.data.articles.bootstrap;
-    // const jsHeadlinesArray = res.data.articles.javascript;
-    // const techHeadlinesArray = res.data.articles.technology;
-    // const jqueryArray = res.data.articles.jquery;
-    // const nodejsArray = res.data.articles.node;
+    const jsHeadlinesArray = res.data.articles.javascript;
+    const techHeadlinesArray = res.data.articles.technology;
+    const jqueryArray = res.data.articles.jquery;
+    const nodejsArray = res.data.articles.node;
 
-    // resArray = [bootstrapArray, jsHeadlinesArray, techHeadlinesArray, jqueryArray, nodejsArray];
+    
 
-    // resArray.forEach(obj => {
-    //     let singleCardDiv = cardCreatorFromRes(obj);
-    //     cardsContainerParent.appendChild(singleCardDiv);
-    let singleCardDiv = cardCreatorFromRes(bootstrapArray);
-    cardsContainerParent.appendChild(singleCardDiv);
-    })
+    const resArray = [bootstrapArray, jsHeadlinesArray, techHeadlinesArray, jqueryArray, nodejsArray];
+
+    resArray.forEach(obj => {
+        eachHeadlineFromEachObject(obj);
+    });
+    
+    
+    // let thing = eachHeadlineFromEachObject(bootstrapArray);
+    // console.log(thing);
+
+
+    // console.log(typeof(singleCardDiv)); // returns undefined
+    
+
+    // cardsContainerParent.appendChild(singleCardDiv);
+
+
+
+
+
+    // function to draw elements out of above arrays
+
+    function eachHeadlineFromEachObject(resObject) {
+
+        // determines length of object first to determine how many times it runs
+        for(let i=0; i < resObject.length; i++) {
+
+            const headline = resObject[i].headline;
+            const author = resObject[i].authorName;
+            const authorImg = resObject[i].authorPhoto;
+
+
+            // console.log(headline);
+            // console.log(author);
+            // console.log(authorImg);
+
+
+            // call below function to make card
+            cardCreatorFromRes(resObject);
+    
+
+            // NEW FUNCTION
+
+            function cardCreatorFromRes(resObject) {
+    
+                let singleCardDiv = document.createElement('div');
+                singleCardDiv.classList.add('card');
+            
+                
+            
+                let singleCardHeadline = document.createElement('div');
+                singleCardHeadline.textContent = headline;
+                singleCardHeadline.classList.add('headline');
+            
+                singleCardDiv.appendChild(singleCardHeadline);
+            
+            
+                let authorDiv = document.createElement('div');
+                authorDiv.classList.add('author');
+            
+                singleCardDiv.appendChild(authorDiv);
+            
+            
+            
+                let imgContainterDiv = document.createElement('div');
+                imgContainterDiv.classList.add('img-container');
+                authorDiv.appendChild(imgContainterDiv);
+            
+                
+                const imgOfAuthor = document.createElement('img');
+                imgOfAuthor.src = authorImg;
+                imgContainterDiv.appendChild(imgOfAuthor);
+            
+            
+                const authorNameSpan = document.createElement('span');
+                authorNameSpan.textContent = author;
+                authorDiv.appendChild(authorNameSpan);
+
+
+
+                cardsContainerParent.appendChild(singleCardDiv);
+            
+                
+            
+            }; 
+    };
+
+
+
+
+}
+
+    
+
+    // resArray.forEach((obj, indx) => {
+
+    //     // cardCreatorFromRes(obj);
+    //     // console.log(indx);
+    //     // console.log(obj, obj[indx].headline, indx);
+    //     console.log(obj[indx].headline)
+
+
+
+    //   })
+})
 
     // const authorCard = cardCreatorFromRes(res);
     // cardsContainerParent.append(authorCard);
 // })
 .catch(err => {
-    // handle error
+    console.log(err);
 });
 
 
+const cardsContainerParent = document.querySelector('.cards-container');
+
+// console.log(cardsContainerParent);
+
+
+
 // WHERE YOU WILL APPEND EVERYTHING ONCE ALL THE CODE RUNS
-const cardsContainerParent = document.querySelector('cards-container');
+
 // DO NOT TOUCH
 
 
-
-function cardCreatorFromRes(resObject) {
-
-
-    
-
-    resObject.forEach((element, indx) => {
-        let singleCardDiv = document.createElement('div');
-        singleCardDiv.classList.add('card');
-
-        let singleCardHeadline = document.createElement('div');
-        singleCardHeadline.textContent = resObject[indx].headline;
-        singleCardHeadline.classList.add('headline');
-
-        singleCardDiv.appendChild(singleCardHeadline);
-
-
-        let authorDiv = document.createElement('div');
-        authorDiv.classList.add('author');
-
-        singleCardDiv.appendChild(authorDiv);
-
-
-
-        let imgContainterDiv = document.createElement('div');
-        imgContainterDiv.classList.add('img-container');
-        authorDiv.appendChild(imgContainterDiv);
-
-    
-        const imgOfAuthor = document.createElement('img');
-        imgOfAuthor.src = resObject[indx].authorPhoto;
-        imgContainterDiv.appendChild(imgOfAuthor);
-
-
-        const authorNameSpan = document.createElement('span');
-        authorNameSpan.textContent = resObject[indx].authorName;
-        authorDiv.appendChild(authorNameSpan);
-
-        // append it all to parent div
-
-        
-    }); return singleCardDiv;
-};
